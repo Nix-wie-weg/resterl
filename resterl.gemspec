@@ -5,15 +5,17 @@
 
 Gem::Specification.new do |s|
   s.name = %q{resterl}
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.authors = ["Florian Dütsch"]
   s.date = %q{2010-09-29}
   s.description = %q{Rudimentary HTTP client with focus on caching}
   s.email = %q{florian.duetsch@nix-wie-weg.de}
   s.extra_rdoc_files = [
     "LICENSE",
-     "README.rdoc"
+     "README.rdoc",
+     "TODO"
   ]
   s.files = [
     ".document",
@@ -21,8 +23,17 @@ Gem::Specification.new do |s|
      "LICENSE",
      "README.rdoc",
      "Rakefile",
+     "TODO",
      "VERSION",
      "lib/resterl.rb",
+     "lib/resterl/base_object.rb",
+     "lib/resterl/cache_interface.rb",
+     "lib/resterl/client.rb",
+     "lib/resterl/redis_cache.rb",
+     "lib/resterl/request.rb",
+     "lib/resterl/response.rb",
+     "lib/resterl/simple_cache.rb",
+     "resterl.gemspec",
      "test/helper.rb",
      "test/test_resterl.rb"
   ]
