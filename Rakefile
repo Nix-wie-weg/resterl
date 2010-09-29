@@ -5,20 +5,19 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "resterl"
-    gem.summary = %Q{Rudimentary HTTP client with focus on caching}
-    gem.description = %Q{Rudimentary HTTP client with focus on caching}
-    gem.email = "florian.duetsch@nix-wie-weg.de"
-    gem.homepage = "http://nix-wie-weg.de/"
-    gem.authors = ["Florian Dütsch"]
-
-    # TODO
-    #gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
-    
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20
     # for additional settings
 
-    # TODO: Können wir auf einen neuere Version gehen?
+    gem.name = "resterl"
+    gem.summary = %Q{Rudimentary HTTP client with focus on caching}
+    # TODO Prio 2
+    #gem.description = %Q{}
+    gem.email = "florian.duetsch@nix-wie-weg.de"
+    gem.homepage = "http://github.com/Nix-wie-weg/resterl"
+    gem.authors = ["Florian Dütsch"]
+
+    # Dependencies
+    gem.add_development_dependency 'shoulda'
     gem.add_dependency 'hashie', '~> 0.4.0'
     gem.add_dependency 'yajl-ruby', '~> 0.7.7'
   end

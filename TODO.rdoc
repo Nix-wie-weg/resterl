@@ -1,5 +1,7 @@
 * Edit README.rdoc
+* Tests!
 * Use technoweenie's faraday as base (http://github.com/technoweenie/faraday)
 * Secure caching with tests
 * Store parsed objects in cache (instead of the plain response)
 * Persistent connections
+* Documentation
