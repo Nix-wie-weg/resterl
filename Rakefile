@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'rubygems'
 require 'rake'
 
@@ -9,8 +10,9 @@ begin
     gem.description = %Q{Rudimentary HTTP client with focus on caching}
     gem.email = "florian.duetsch@nix-wie-weg.de"
     gem.homepage = "http://nix-wie-weg.de/"
+    gem.authors = ["Florian Dütsch"]
+
     # TODO
-    #gem.authors = ["fduetsch"]
     #gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
     
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20
