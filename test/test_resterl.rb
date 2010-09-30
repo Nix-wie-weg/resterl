@@ -30,6 +30,27 @@ class TestResterl < Test::Unit::TestCase
       end
 
     end
+
+    should 'work with deeper nestings (cattr_inheritable)' do
+
+      assert_nothing_raised do
+
+        class Test::BaseObject < Resterl::BaseObject
+          self.mime_type = :json
+          self.resterl_client = 1
+        end
+
+        class Test::T1 < Test::BaseObject
+
+        end
+
+        
+        Test::T1.complete_mime_type
+        Test::T1.resterl_client
+
+      end
+
+    end
     
   end
 

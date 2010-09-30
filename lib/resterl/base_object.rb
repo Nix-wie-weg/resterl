@@ -3,8 +3,7 @@ require 'hashie'
 class Resterl::BaseObject #< Hashie::Mash
 
   include ClassLevelInheritableAttributes
-  inheritable_attributes :resterl_client, :parser, :complete_mime_type,
-                         :mapper
+  cattr_inheritable :resterl_client, :parser, :complete_mime_type, :mapper
 
   #self.resterl_client = nil
   #self.complete_mime_type = 'text/plain'
@@ -34,6 +33,7 @@ class Resterl::BaseObject #< Hashie::Mash
     when :json
       [proc {|str| JSON.parse(str)}, 'application/json']
     when :xml
+      # TODO: Only works when Rails is loaded?
       [proc {|str| Hash.from_xml(str)}, 'application/xml']
     end
   end
