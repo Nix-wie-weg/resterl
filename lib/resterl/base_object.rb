@@ -2,8 +2,10 @@ require 'hashie'
 
 class Resterl::BaseObject #< Hashie::Mash
 
-  class_inheritable_accessor :resterl_client, :parser, :complete_mime_type,
-                             :mapper
+  include ClassLevelInheritableAttributes
+  inheritable_attributes :resterl_client, :parser, :complete_mime_type,
+                         :mapper
+
   #self.resterl_client = nil
   #self.complete_mime_type = 'text/plain'
 

@@ -1,7 +1,19 @@
 require 'helper'
 
 class TestResterl < Test::Unit::TestCase
-  should "probably rename this file and start testing for real" do
-    flunk "hey buddy, you should probably rename this file and start testing for real"
+
+  should 'load successfully' do
+    dummy = nil
+    cache = Resterl::Caches::KeyPrefixDecorator.new(
+      Resterl::Caches::RailsMemcachedCache.new(dummy),
+      'prefix_'
+    )
+
+
+    ODIN_CLIENT = Resterl::Client.new(
+      :base_uri => 'http://www.google.com/',
+      :cache => cache
+    )
   end
+
 end

@@ -2,7 +2,7 @@ class Resterl::Client
   attr_reader :options
   DEFAULTS = {
     :max_redirect_depth => 10,
-    :cache => Resterl::SimpleCache.new,
+    :cache => Resterl::Caches::SimpleCache.new,
     :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE,
     :expiry_multiplier => 10,
     :minimum_cache_lifetime => 5 * 60 # 5 Minuten

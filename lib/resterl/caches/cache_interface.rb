@@ -1,4 +1,4 @@
-class Resterl::CacheInterface
+class Resterl::Caches::CacheInterface
   def read key
     raise 'Not yet implemented!'
   end

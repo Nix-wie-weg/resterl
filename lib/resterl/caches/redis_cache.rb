@@ -1,4 +1,4 @@
-class Resterl::RedisCache < Resterl::CacheInterface
+class Resterl::Caches::RedisCache < Resterl::Caches::CacheInterface
 
   def initialize client
     @client = client

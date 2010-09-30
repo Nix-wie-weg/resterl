@@ -1,7 +1,7 @@
 # From:
 # http://github.com/der-flo/localmemcache_store/blob/master/lib/expiry_cache.rb
 
-class Resterl::SimpleCache < Resterl::CacheInterface
+class Resterl::Caches::SimpleCache < Resterl::Caches::CacheInterface
 
   class Entry < Struct.new(:data, :expires_at)
     def expired?
