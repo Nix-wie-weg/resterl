@@ -16,4 +16,21 @@ class TestResterl < Test::Unit::TestCase
     )
   end
 
+  context 'BaseObject' do
+    should 'provide class level inheritable attributes' do
+
+      assert_nil Resterl::BaseObject.resterl_client
+      assert_nil Resterl::BaseObject.complete_mime_type
+
+      assert_nothing_raised do
+        class Test < Resterl::BaseObject
+          self.resterl_client = nil
+          self.complete_mime_type = 'text/plain'
+        end
+      end
+
+    end
+    
+  end
+
 end
