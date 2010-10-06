@@ -4,12 +4,14 @@ class Resterl::BaseObject #< Hashie::Mash
 
   include ClassLevelInheritableAttributes
   cattr_inheritable :resterl_client, :parser, :complete_mime_type, :mapper
+  attr_reader :response
 
   #self.resterl_client = nil
   #self.complete_mime_type = 'text/plain'
 
-  def initialize data = {}
+  def initialize data = {}, response = nil
     @data = Hashie::Mash.new data
+    @response = response
   end
 
   def method_missing sym, *args, &block
@@ -22,10 +24,11 @@ class Resterl::BaseObject #< Hashie::Mash
 
   def self.get_object url, params = {}
     headers = { 'Accept' => complete_mime_type }
-    doc = resterl_client.get(url, params, headers).body
+    response = resterl_client.get(url, params, headers)
+    doc = response.body
     doc = parser.call(doc)
     doc = mapper.map(doc) if @mapper
-    new(doc)
+    new(doc, response)
   end
 
   def self.mime_type= t

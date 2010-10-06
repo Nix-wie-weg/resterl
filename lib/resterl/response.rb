@@ -16,6 +16,14 @@ class Resterl::Response
     @expires_at = t
   end
 
+  def header h
+    @net_http_response[h]
+  end
+
+  def expires_in
+    extract_max_age
+  end
+
   private
   
   def extract_max_age
