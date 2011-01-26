@@ -73,7 +73,7 @@ class Resterl::Client
 
     # Cachezeit berechnen
     expiry = [
-      max_age_seconds * options[:expiry_multiplier],
+      max_age_seconds.to_i * options[:expiry_multiplier],
       options[:minimum_cache_lifetime]
     ].max
 
