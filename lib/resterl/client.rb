@@ -32,6 +32,15 @@ class Resterl::Client
       new_get_request url, cache_key, params, headers, old_response
     end
   end
+  
+  def post url, params, data, headers
+    # Caching nicht notwendig
+    url = setup_url url
+    request = Resterl::PostRequest.new(self, url, params, data, headers)
+    response = request.perform.response
+
+    response
+  end
 
   private
 
@@ -84,8 +93,12 @@ class Resterl::Client
   end
 
   def setup_url url
-    bu = options[:base_uri]
-    bu ? "#{bu}#{url}" : url
+    if url =~ /^http/
+      url
+    else
+      bu = options[:base_uri]
+      bu ? "#{bu}#{url}" : url
+    end
   end
 
   def data_to_cache_key *args

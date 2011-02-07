@@ -16,6 +16,7 @@ require 'resterl/caches/key_prefix_decorator'
 
 require 'resterl/client'
 require 'resterl/request'
+require 'resterl/post_request'
 require 'resterl/response'
 require 'resterl/base_object'
 
