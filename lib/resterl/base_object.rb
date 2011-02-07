@@ -3,7 +3,8 @@ require 'hashie'
 class Resterl::BaseObject #< Hashie::Mash
 
   include ClassLevelInheritableAttributes
-  cattr_inheritable :resterl_client, :parser, :complete_mime_type, :mapper
+  cattr_inheritable :resterl_client, :parser, :composer, :complete_mime_type,
+                    :mapper
   attr_reader :response
 
   #self.resterl_client = nil
@@ -30,14 +31,30 @@ class Resterl::BaseObject #< Hashie::Mash
     doc = mapper.map(doc) if @mapper
     new(doc, response)
   end
+  
+  def self.post_to_object url, params = {}, data = {}
+    headers = {
+      'Accept' => complete_mime_type,
+      'Content-Type' => complete_mime_type
+    }
+    data = composer.call(data)
+    response = resterl_client.post(url, params, data, headers)
+  end
 
   def self.mime_type= t
-    self.parser, self.complete_mime_type = case t
+    self.parser, self.composer, self.complete_mime_type = case t
     when :json
-      [proc {|str| JSON.parse(str)}, 'application/json']
+      # TODO: Only works when Rails is loaded?
+      [ proc {|str| JSON.parse(str)},
+        proc(&:to_json),
+        'application/json'
+      ]
     when :xml
       # TODO: Only works when Rails is loaded?
-      [proc {|str| Hash.from_xml(str)}, 'application/xml']
+      [ proc {|str| Hash.from_xml(str)},
+        proc(&:to_xml),
+        'application/xml'
+      ]
     end
   end
 

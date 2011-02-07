@@ -56,7 +56,7 @@ class Resterl::Client
     end
 
     # Anfrage stellen, ggf. ETag mit übergeben
-    request = Resterl::Request.new(self, url, params, headers)
+    request = Resterl::GetRequest.new(self, url, params, headers)
     new_response = request.perform.response
 
     response, max_age_seconds = case new_response
