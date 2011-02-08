@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{resterl}
-  s.version = "0.0.6"
+  s.version = "0.0.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Florian D\303\274tsch"]
-  s.date = %q{2011-01-26}
+  s.date = %q{2011-02-08}
   s.email = %q{florian.duetsch@nix-wie-weg.de}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -31,7 +31,9 @@ Gem::Specification.new do |s|
     "lib/resterl/caches/simple_cache.rb",
     "lib/resterl/class_level_inheritable_attributes.rb",
     "lib/resterl/client.rb",
-    "lib/resterl/request.rb",
+    "lib/resterl/generic_request.rb",
+    "lib/resterl/get_request.rb",
+    "lib/resterl/post_request.rb",
     "lib/resterl/response.rb",
     "resterl.gemspec",
     "test/helper.rb",
