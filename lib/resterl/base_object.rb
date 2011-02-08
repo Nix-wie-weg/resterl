@@ -44,13 +44,13 @@ class Resterl::BaseObject #< Hashie::Mash
   def self.mime_type= t
     self.parser, self.composer, self.complete_mime_type = case t
     when :json
-      # TODO: Only works when Rails is loaded?
+      # TODO prio 2: Only works when Rails is loaded?
       [ proc {|str| JSON.parse(str)},
         proc(&:to_json),
         'application/json'
       ]
     when :xml
-      # TODO: Only works when Rails is loaded?
+      # TODO prio 2: Only works when Rails is loaded?
       [ proc {|str| Hash.from_xml(str)},
         proc(&:to_xml),
         'application/xml'
