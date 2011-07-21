@@ -41,6 +41,20 @@ class Resterl::Client
 
     response
   end
+  
+  def put url, params, data, headers
+    # TODO: Testen, durchdenken, refactoring?
+    url = setup_url url
+    request = Resterl::PutRequest.new(self, url, params, data, headers)
+    request.perform.response
+  end
+
+  def delete url, params, data, headers
+    # TODO: Testen, durchdenken, refactoring?
+    url = setup_url url
+    request = Resterl::DeleteRequest.new(self, url, params, data, headers)
+    request.perform.response
+  end
 
   private
 
@@ -65,7 +79,6 @@ class Resterl::Client
       # Aus dem Cache muss nichts entfernt werden, weil ja auch kein Eintrag
       # (mehr) drin ist.
       new_response.error!
-
     when Net::HTTPNotModified
       # Wenn "304 Not Modified", dann altes Ergebnis als neues Ergebnis
       # verwenden

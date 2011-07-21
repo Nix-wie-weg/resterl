@@ -18,6 +18,8 @@ require 'resterl/client'
 require 'resterl/generic_request'
 require 'resterl/get_request'
 require 'resterl/post_request'
+require 'resterl/put_request'
+require 'resterl/delete_request'
 require 'resterl/response'
 require 'resterl/base_object'
 
