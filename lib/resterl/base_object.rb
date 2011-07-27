@@ -1,5 +1,8 @@
 require 'hashie'
 
+# Idee: If-Match wäre bei .delete_object und .put_object ein interessantes
+#       Feature.
+
 class Resterl::BaseObject #< Hashie::Mash
 
   include ClassLevelInheritableAttributes
@@ -33,13 +36,47 @@ class Resterl::BaseObject #< Hashie::Mash
   end
   
   def self.post_to_object url, params = {}, data = {}
+    # TODO: Refactoring
+
     headers = {
       'Accept' => complete_mime_type,
       'Content-Type' => complete_mime_type
     }
     data = composer.call(data)
     response = resterl_client.post(url, params, data, headers)
+    
+    doc = response.body
+    doc = parser.call(doc)
+    doc = mapper.map(doc) if @mapper
+    new(doc, response)
   end
+  
+  def self.delete_object url
+    headers = {
+      'Accept' => complete_mime_type,
+    }
+    resterl_client.delete(url, {}, headers, {})
+    # TODO: Antwort parsen?
+  end
+  
+  def self.put_object url, params = {}, data
+    # TODO: Refactoring
+    
+    headers = {
+      'Accept' => complete_mime_type,
+      'Content-Type' => complete_mime_type
+    }
+    data = composer.call(data)
+    response = resterl_client.put(url, params, data, headers)
+    
+    doc = response.body
+    doc = parser.call(doc)
+    doc = mapper.map(doc) if @mapper
+    
+    # TODO: In Ordnung?
+    new(doc, response)
+  end
+  
 
   def self.mime_type= t
     self.parser, self.composer, self.complete_mime_type = case t
