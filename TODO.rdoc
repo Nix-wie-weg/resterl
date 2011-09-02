@@ -5,3 +5,4 @@
 * Store parsed objects in cache (instead of the plain response)
 * Persistent connections
 * Documentation
+* Net::HTTP::Version_1_1 is standard under 1.9.3-preview1 therefore the method doesn't exist anymore.
