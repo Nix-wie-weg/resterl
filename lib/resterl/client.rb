@@ -32,7 +32,7 @@ class Resterl::Client
       new_get_request url, cache_key, params, headers, old_response
     end
   end
-  
+
   def post url, params, data, headers
     # Caching nicht notwendig
     url = setup_url url
@@ -41,7 +41,7 @@ class Resterl::Client
 
     response
   end
-  
+
   def put url, params, data, headers
     # TODO: Testen, durchdenken, refactoring?
     url = setup_url url
