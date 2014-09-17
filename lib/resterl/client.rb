@@ -1,11 +1,11 @@
 class Resterl::Client
   attr_reader :options
   DEFAULTS = {
-    :max_redirect_depth => 10,
-    :cache => Resterl::Caches::SimpleCache.new,
-    :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE,
-    :expiry_multiplier => 10,
-    :minimum_cache_lifetime => 5 * 60 # 5 Minuten
+    max_redirect_depth: 10,
+    cache: Resterl::Caches::SimpleCache.new,
+    ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,
+    expiry_multiplier: 10,
+    minimum_cache_lifetime: 5 * 60 # 5 Minuten
   }
 
   class TooManyRedirects < StandardError; end
@@ -54,6 +54,10 @@ class Resterl::Client
     url = setup_url url
     request = Resterl::DeleteRequest.new(self, url, params, data, headers)
     request.perform.response
+  end
+
+  def invalidate url, params, headers
+    @cache.delete data_to_cache_key(url, params, headers)
   end
 
   private
