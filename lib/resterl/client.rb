@@ -2,7 +2,7 @@
 
 module Resterl
   class Client
-    attr_reader :options
+    attr_reader :options, :cache
     DEFAULTS = {
       max_redirect_depth: 10,
       cache: Resterl::Caches::SimpleCache.new,
