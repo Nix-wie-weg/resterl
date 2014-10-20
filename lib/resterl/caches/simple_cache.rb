@@ -90,8 +90,9 @@ module Resterl
 
       def expire_random_entries count = 1_000
         [count, @data.length].min.times do
-          key, entry = @data.random_pair
+          key = @data.keys.sample
           break if key.nil?
+          entry = @data[key]
           verify_entry_not_expired key, entry
         end
       end
