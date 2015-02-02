@@ -17,6 +17,5 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'hashie', '~> 0.4.0'
   s.add_runtime_dependency 'yajl-ruby', '~> 1.1'
-  s.add_development_dependency 'shoulda'
 end
 
