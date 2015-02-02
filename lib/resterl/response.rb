@@ -1,11 +1,10 @@
 class Resterl::Response
   attr_reader :body, :expires_at, :net_http_response
 
-  def initialize(r)
+  def initialize(r, minimum_cache_lifetime)
     @net_http_response = r
     @body = r.body
-    #@expires_in = extract_max_age
-    @expires_at = Time.now + extract_max_age
+    @expires_at = Time.now + [extract_max_age, minimum_cache_lifetime].max
   end
 
   def expired?
@@ -25,7 +24,7 @@ class Resterl::Response
   end
 
   private
-  
+
   def extract_max_age
     cc = @net_http_response['Cache-Control']
     cc.is_a?(String) ? cc[/max-age=(\d+)/, 1].to_i : 0

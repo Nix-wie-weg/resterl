@@ -15,7 +15,11 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{|f|File.basename(f)}
   #s.require_paths = ["lib"]
 
+  s.add_runtime_dependency 'activesupport', '>= 2.3.18'
   s.add_runtime_dependency 'hashie', '~> 0.4.0'
   s.add_runtime_dependency 'yajl-ruby', '~> 1.1'
+  s.add_development_dependency 'rspec', '~> 3.1'
+  s.add_development_dependency 'webmock', '~> 1.20.4'
+  s.add_development_dependency 'timecop', '~> 0.7.1'
+  s.add_development_dependency 'pry'
 end
-
