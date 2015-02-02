@@ -66,14 +66,7 @@ module Resterl
     private
 
     def new_get_request url, cache_key, params, headers, old_response
-      # Ggf. ETag und Last-Modified auslesen
-      if old_response
-        etag = old_response.net_http_response['ETag']
-        headers['If-None-Match'] = etag if etag
-
-        last_modified = old_response.net_http_response['Last-Modified']
-        headers['If-Modified-Since'] = last_modified if last_modified
-      end
+      apply_conditional_headers(headers, old_response)
 
       # Anfrage stellen, ggf. ETag mit übergeben
       request = Resterl::GetRequest.new(self, url, params, headers)
@@ -111,6 +104,16 @@ module Resterl
       @cache.write cache_key, response, expiry
 
       response
+    end
+
+    # Ggf. ETag und Last-Modified auslesen
+    def apply_conditional_headers(headers, old_response)
+      return unless old_response
+      etag = old_response.net_http_response['ETag']
+      headers['If-None-Match'] = etag if etag
+
+      last_modified = old_response.net_http_response['Last-Modified']
+      headers['If-Modified-Since'] = last_modified if last_modified
     end
 
     def setup_url url
