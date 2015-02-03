@@ -82,7 +82,8 @@ module Resterl
         when Net::HTTPNotModified
           # Wenn "304 Not Modified", dann altes
           # Ergebnis als neues Ergebnis verwenden
-          r_temp = Resterl::Response.new(new_response)
+          r_temp = Resterl::Response.new(new_response,
+                                         options[:minimum_cache_lifetime])
           old_response.update_expires_at(
             r_temp.expires_at)
           [old_response, r_temp.expires_at - Time.now]
