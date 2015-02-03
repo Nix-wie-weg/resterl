@@ -66,38 +66,33 @@ module Resterl
     private
 
     def new_get_request url, cache_key, params, headers, old_response
-      # Ggf. ETag und Last-Modified auslesen
-      if old_response
-        etag = old_response.net_http_response['ETag']
-        headers['If-None-Match'] = etag if etag
-
-        last_modified = old_response.net_http_response['Last-Modified']
-        headers['If-Modified-Since'] = last_modified if last_modified
-      end
+      apply_conditional_headers(headers, old_response)
 
       # Anfrage stellen, ggf. ETag mit übergeben
       request = Resterl::GetRequest.new(self, url, params, headers)
       new_response = request.perform.response
 
-      response, max_age_seconds = case new_response
-                                  when Net::HTTPClientError,
-                                       Net::HTTPServerError
-                                    # Aus dem Cache muss nichts entfernt werden,
-                                    # weil ja auch kein Eintrag (mehr) drin ist.
-                                    new_response.error!
-                                  when Net::HTTPNotModified
-                                    # Wenn "304 Not Modified", dann altes
-                                    # Ergebnis als neues Ergebnis verwenden
-                                    r_temp = Resterl::Response.new(new_response)
-                                    old_response.update_expires_at(
-                                      r_temp.expires_at)
-                                    [old_response, r_temp.expires_at - Time.now]
-                                  when Net::HTTPSuccess
-                                    r = Resterl::Response.new(new_response)
-                                    [r, r.expires_at - Time.now]
-                                  else
-                                    raise 'unknown response'
-                                  end
+      response, max_age_seconds =
+        case new_response
+        when Net::HTTPClientError,
+             Net::HTTPServerError
+          # Aus dem Cache muss nichts entfernt werden,
+          # weil ja auch kein Eintrag (mehr) drin ist.
+          new_response.error!
+        when Net::HTTPNotModified
+          # Wenn "304 Not Modified", dann altes
+          # Ergebnis als neues Ergebnis verwenden
+          r_temp = Resterl::Response.new(new_response)
+          old_response.update_expires_at(
+            r_temp.expires_at)
+          [old_response, r_temp.expires_at - Time.now]
+        when Net::HTTPSuccess
+          r = Resterl::Response.new(new_response,
+                                    options[:minimum_cache_lifetime])
+          [r, r.expires_at - Time.now]
+        else
+          raise 'unknown response'
+        end
 
       # Cachezeit berechnen
       expiry = [
@@ -109,6 +104,16 @@ module Resterl
       @cache.write cache_key, response, expiry
 
       response
+    end
+
+    # Ggf. ETag und Last-Modified auslesen
+    def apply_conditional_headers(headers, old_response)
+      return unless old_response
+      etag = old_response.net_http_response['ETag']
+      headers['If-None-Match'] = etag if etag
+
+      last_modified = old_response.net_http_response['Last-Modified']
+      headers['If-Modified-Since'] = last_modified if last_modified
     end
 
     def setup_url url
