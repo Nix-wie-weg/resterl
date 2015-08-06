@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# encoding: utf-8
 
 module Resterl
   class Client
@@ -8,6 +8,9 @@ module Resterl
       cache: Resterl::Caches::SimpleCache.new,
       ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,
       expiry_multiplier: 10,
+      # Net:HTTP defaults for open and read timeouts, in seconds:
+      open_timeout: nil,
+      read_timeout: 60,
       minimum_cache_lifetime: 5 * 60 # 5 Minuten
     }
 
