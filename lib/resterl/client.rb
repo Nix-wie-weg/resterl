@@ -8,7 +8,6 @@ module Resterl
       cache: Resterl::Caches::SimpleCache.new,
       ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,
       expiry_multiplier: 10,
-      # Net:HTTP defaults for open and read timeouts, in seconds:
       open_timeout: nil,
       read_timeout: 60,
       minimum_cache_lifetime: 5 * 60 # 5 Minuten
@@ -73,39 +72,8 @@ module Resterl
 
       # Anfrage stellen, ggf. ETag mit übergeben
       request = Resterl::GetRequest.new(self, url, params, headers)
-      new_response = request.perform.response
-
-      response, max_age_seconds =
-        case new_response
-        when Net::HTTPClientError,
-             Net::HTTPServerError
-          # Aus dem Cache muss nichts entfernt werden,
-          # weil ja auch kein Eintrag (mehr) drin ist.
-          new_response.error!
-        when Net::HTTPNotModified
-          # Wenn "304 Not Modified", dann altes
-          # Ergebnis als neues Ergebnis verwenden
-          r_temp = Resterl::Response.new(new_response,
-                                         options[:minimum_cache_lifetime])
-          old_response.update_expires_at(
-            r_temp.expires_at)
-          [old_response, r_temp.expires_at - Time.now]
-        when Net::HTTPSuccess
-          r = Resterl::Response.new(new_response,
-                                    options[:minimum_cache_lifetime])
-          [r, r.expires_at - Time.now]
-        else
-          raise 'unknown response'
-        end
-
-      # Cachezeit berechnen
-      expiry = [
-        max_age_seconds.to_i * options[:expiry_multiplier],
-        options[:minimum_cache_lifetime]
-      ].max
-
-      # Ergebnis im Cache speichern
-      @cache.write cache_key, response, expiry
+      response, max_age_seconds = get_response(request, old_response)
+      cache_response(response, max_age_seconds, cache_key)
 
       response
     end
@@ -131,6 +99,47 @@ module Resterl
 
     def data_to_cache_key *args
       args.hash
+    end
+
+    def get_response(request, old_response)
+      # Anfrage stellen, ggf. ETag mit übergeben
+      new_response = request.perform.response
+
+      case new_response
+      when Net::HTTPClientError,
+           Net::HTTPServerError
+        # Aus dem Cache muss nichts entfernt werden,
+        # weil ja auch kein Eintrag (mehr) drin ist.
+        new_response.error!
+      when Net::HTTPNotModified
+        reuse_old_response(new_response, old_response)
+      when Net::HTTPSuccess
+        r = Resterl::Response.new(new_response,
+                                  options[:minimum_cache_lifetime])
+        [r, r.expires_at - Time.now]
+      else
+        raise 'unknown response'
+      end
+    end
+
+    def cache_response(response, max_age_seconds, cache_key)
+      # Cachezeit berechnen
+      expiry = [
+        max_age_seconds.to_i * options[:expiry_multiplier],
+        options[:minimum_cache_lifetime]
+      ].max
+
+      # Ergebnis im Cache speichern
+      @cache.write cache_key, response, expiry
+    end
+
+    def reuse_old_response(new_response, old_response)
+      # Wenn "304 Not Modified", dann altes
+      # Ergebnis als neues Ergebnis verwenden
+      r_temp = Resterl::Response.new(new_response,
+                                     options[:minimum_cache_lifetime])
+      old_response.update_expires_at(r_temp.expires_at)
+      [old_response, r_temp.expires_at - Time.now]
     end
   end
 end

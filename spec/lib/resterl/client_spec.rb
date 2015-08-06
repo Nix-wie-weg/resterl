@@ -4,9 +4,7 @@ require 'webmock/rspec'
 require 'timecop'
 
 describe Resterl::Client do
-
   describe 'minimum cache lifetime' do
-
     before do
       Timecop.freeze(Time.parse('2015-01-01 01:00'))
 
