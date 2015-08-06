@@ -17,6 +17,7 @@ module Resterl
     def http_object_and_query_path
       uri = URI.parse(url)
       http = Net::HTTP.new(uri.host, uri.port)
+      apply_timeout_settings http
       apply_ssl http, uri
 
       path_with_query = uri.path
@@ -44,6 +45,11 @@ module Resterl
       return unless uri.is_a? URI::HTTPS
       http.use_ssl = true
       http.verify_mode = rest_client.options[:ssl_verify_mode]
+    end
+
+    def apply_timeout_settings http
+      http.open_timeout = rest_client.options[:open_timeout]
+      http.read_timeout = rest_client.options[:read_timeout]
     end
 
     def redirect_url
