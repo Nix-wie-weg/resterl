@@ -8,7 +8,7 @@ module Resterl
       cache: Resterl::Caches::SimpleCache.new,
       ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE,
       expiry_multiplier: 10,
-      open_timeout: nil,
+      open_timeout: 15,
       read_timeout: 60,
       minimum_cache_lifetime: 5 * 60 # 5 Minuten
     }
