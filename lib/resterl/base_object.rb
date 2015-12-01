@@ -24,6 +24,10 @@ class Resterl::BaseObject #< Hashie::Mash
     @data.send sym, *args, &block
   end
 
+  def respond_to? sym
+    @data.respond_to? sym
+  end
+
   protected
 
   def self.get_object url, params = {}
@@ -34,7 +38,7 @@ class Resterl::BaseObject #< Hashie::Mash
     doc = mapper.map(doc) if @mapper
     new(doc, response)
   end
-  
+
   def self.post_to_object url, params = {}, data = {}
     # TODO: Refactoring
 
@@ -44,13 +48,13 @@ class Resterl::BaseObject #< Hashie::Mash
     }
     data = composer.call(data)
     response = resterl_client.post(url, params, data, headers)
-    
+
     doc = response.body
     doc = parser.call(doc)
     doc = mapper.map(doc) if @mapper
     new(doc, response)
   end
-  
+
   def self.delete_object url
     headers = {
       'Accept' => complete_mime_type,
@@ -58,25 +62,25 @@ class Resterl::BaseObject #< Hashie::Mash
     resterl_client.delete(url, {}, headers, {})
     # TODO: Antwort parsen?
   end
-  
+
   def self.put_object url, params = {}, data
     # TODO: Refactoring
-    
+
     headers = {
       'Accept' => complete_mime_type,
       'Content-Type' => complete_mime_type
     }
     data = composer.call(data)
     response = resterl_client.put(url, params, data, headers)
-    
+
     doc = response.body
     doc = parser.call(doc)
     doc = mapper.map(doc) if @mapper
-    
+
     # TODO: In Ordnung?
     new(doc, response)
   end
-  
+
 
   def self.mime_type= t
     self.parser, self.composer, self.complete_mime_type = case t
