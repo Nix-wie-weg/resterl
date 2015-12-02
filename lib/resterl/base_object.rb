@@ -17,7 +17,7 @@ module Resterl
     end
 
     def respond_to? sym
-      @data.respond_to? sym
+      super || @data.respond_to?(sym)
     end
 
     class << self
@@ -34,7 +34,7 @@ module Resterl
         resterl_client.delete(url, {}, accept_header, {})
       end
 
-      def put_object url, params = {}, data = {}
+      def put_object url, params = {}, data
         post_put_object(:put, url, params, data)
       end
 
