@@ -21,3 +21,8 @@ pkg
 ## PROJECT::SPECIFIC
 PRIVATE_TODO.rdoc
 nbproject
+
+.bundle
+Gemfile.lock
+*.gem
+pkg
