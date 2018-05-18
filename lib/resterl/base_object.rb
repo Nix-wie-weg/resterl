@@ -16,8 +16,8 @@ module Resterl
       @data.send sym, *args, &block
     end
 
-    def respond_to? sym
-      super || @data.respond_to?(sym)
+    def respond_to? sym, include_private = false
+      super || @data.respond_to?(sym, include_private)
     end
 
     class << self
