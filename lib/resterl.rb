@@ -2,8 +2,9 @@ require 'net/http'
 require 'net/https'
 require 'yajl/json_gem'
 ################################################################################
-module Resterl; end
-module Resterl::Caches; end
+module Resterl
+  module Caches; end
+end
 ################################################################################
 require 'resterl/class_level_inheritable_attributes'
 
@@ -23,7 +24,3 @@ require 'resterl/put_request'
 require 'resterl/delete_request'
 require 'resterl/response'
 require 'resterl/base_object'
-
-################################################################################
-Net::HTTP.version_1_1 if RUBY_VERSION < '1.9.3'
-################################################################################
