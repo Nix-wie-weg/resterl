@@ -1,4 +1,5 @@
 require 'active_support/core_ext/object/blank'
+require 'active_support/core_ext/hash'
 
 module Resterl
   class GenericRequest
@@ -29,11 +30,7 @@ module Resterl
     end
 
     def query_param_string
-      @query_param_string ||= begin
-        @query_params.collect do |key, value|
-          "#{URI.escape(key.to_s)}=#{URI.escape(value.to_s)}"
-        end.join('&')
-      end
+      @query_param_string ||= @query_params.to_query
     end
 
     def apply_basic_auth request
