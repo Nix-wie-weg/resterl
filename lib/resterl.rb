@@ -14,6 +14,7 @@ require 'resterl/caches/redis_cache'
 require 'resterl/caches/simple_cache'
 require 'resterl/caches/rails_memcached_cache'
 require 'resterl/caches/key_prefix_decorator'
+require 'resterl/caches/cache_key_generator'
 require 'resterl/caches/nil_cache'
 
 require 'resterl/client'
