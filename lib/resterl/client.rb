@@ -97,8 +97,8 @@ module Resterl
       end
     end
 
-    def data_to_cache_key *args
-      args.hash
+    def data_to_cache_key url, params, headers
+      Caches::CacheKeyGenerator.generate(url, params, headers)
     end
 
     def get_response(request, old_response)
