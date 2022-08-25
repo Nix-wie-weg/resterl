@@ -1,6 +1,5 @@
 require 'net/http'
 require 'net/https'
-require 'yajl/json_gem'
 ################################################################################
 module Resterl
   module Caches; end
