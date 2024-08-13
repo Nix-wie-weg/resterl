@@ -4,8 +4,8 @@ require File.expand_path('../lib/resterl/version', __FILE__)
 Gem::Specification.new do |s|
   s.name = 'resterl'
   s.version = Resterl::VERSION
-  s.authors = ['Florian Dütsch', 'Stefan Hoffmann']
-  s.email = ['florian.duetsch@nix-wie-weg.de', 'stefan.hoffmann@nix-wie-weg.de']
+  s.authors = ['Nix-wie-weg Team']
+  s.email = ['admin@nix-wie-weg.de']
   s.homepage = 'https://github.com/Nix-wie-weg/resterl'
   s.summary = 'Rudimentary HTTP client with focus on caching'
   s.files         = `git ls-files`.split("\n")
